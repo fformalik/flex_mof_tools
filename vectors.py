@@ -175,8 +175,8 @@ def mode_normalization(mode,mass):
     mode_m_norm = np.zeros(np.shape(mode))
     mode_full_norm = np.zeros(np.shape(mode))
     for i in range(len(mode)):
-        mode_m_norm[i] = mode[i]/np.sqrt(mass)   #normalizacja po masie
-        mode_full_norm[i] = mode_m_norm[i]/np.linalg.norm(mode_m_norm[i])     #normalizzacja do jedynki 
+        mode_m_norm[i] = mode[i]/np.sqrt(mass)   
+        mode_full_norm[i] = mode_m_norm[i]/np.linalg.norm(mode_m_norm[i]) 
     return mode_m_norm, mode_full_norm
 
 
@@ -231,15 +231,15 @@ if __name__ == "__main__":
     figs = (9.36,6.8)
 # =============================================================================
 
-    poscar1, poscar2 = struct_1, struct_2                                           #czytanie plików pocz. i konc.
+    poscar1, poscar2 = struct_1, struct_2                                          
     vector_norm, m, symbols, H_index  = poscars2vect(poscar1, poscar2,
-                                               include_H = h, scaling=scaling)    #funkcja wyrzuca wektor exp norm, masy, symbole, wspolrzedne 
+                                               include_H = h, scaling=scaling)     
     omega, mode = load_vibmodes_from_outcar(outcar,include_H=h,
-                                        H_index=H_index)                            #wyciąga czestosci i mody z outcar
+                                        H_index=H_index)                          
 
-    mode_m, mode_norm = mode_normalization(mode,m)                                  #normalizuje mody wyciagniete z outcar
+    mode_m, mode_norm = mode_normalization(mode,m)                                
 
-    dots = scalar(vector_norm,mode)                                            #liczy iloczn skalarny modow z wektorem
+    dots = scalar(vector_norm,mode)                                        
     dots_mass = scalar_m(vector_norm,mode_m,m) 
     
     dots = dots_mass
@@ -289,10 +289,10 @@ if __name__ == "__main__":
 
 #==========================wykres=============================================
     
-    omega_lin = np.linspace(1.1*min(omega),1.1*max(omega),plot_res)                  #fitowanie modów lorentzami
-    intens = np.zeros((plot_res))                                                #
-    for j in range(len(dots)):                                                 #
-        intens = intens + lorentz(omega_lin, abs(dots[j]), omega[j], width)         #
+    omega_lin = np.linspace(1.1*min(omega),1.1*max(omega),plot_res)               
+    intens = np.zeros((plot_res))                                                
+    for j in range(len(dots)):                                                 
+        intens = intens + lorentz(omega_lin, abs(dots[j]), omega[j], width)         
     
     np.savetxt(plot_file+'_spectrum.dat',
                np.concatenate((np.reshape(omega_lin,(plot_res,1)),np.reshape(intens,(plot_res,1))),axis=1))
